@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:tcp/cubits/socket_list/socket_state.dart';
 import 'package:tcp/models/items.dart';
 import 'package:tcp/pages/goals.dart';
@@ -92,14 +91,14 @@ class _AddGoalsState extends State<AddGoals> {
                 },
               ),
               SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  final host = _data.address.toString();
-                  final port = int.tryParse(_data.port.toString()) ?? 0;
-                  context.read<TcpCubit>().connect(host, port);
-                },
-                child: Text('Connect'),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     final host = _data.address.toString();
+              //     final port = int.tryParse(_data.port.toString()) ?? 0;
+              //     context.read<TcpCubit>().connect(host, port);
+              //   },
+              //   child: Text('Connect'),
+              // ),
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
@@ -121,11 +120,11 @@ class _AddGoalsState extends State<AddGoals> {
                 },
                 child: Text('Send Message'),
               ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text('Disconnect'),
-              )
+              // SizedBox(height: 16),
+              // ElevatedButton(
+              //   onPressed: () {},
+              //   child: Text('Disconnect'),
+              // )
             ],
           ),
         ),

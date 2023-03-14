@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,6 +14,8 @@ import 'package:tcp/widgets/drawer.dart';
 
 import '../cubits/socket_list/socket_cubit.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+
+import '../cubits/tcp_cubits/tcp_cubit.dart';
 
 class Goals extends StatefulWidget {
   final socketList data;
@@ -48,14 +52,34 @@ class _GoalsState extends State<Goals> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: () {
-                if(_isSelected){
-                  
-                }
-              },
-              child: Icon(Icons.light,
-              ),
+            child: Row(
+              children: [
+                // Row(
+                //   children: [
+                //     GestureDetector(
+                //       onTap: () {
+                //         context
+                //             .read<TcpCubit>()
+                //             .connect(_data.address, _data.port);
+                //       },
+                //       child: Icon(
+                //         Icons.computer,
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       width: 10,
+                //     ),
+                //     GestureDetector(
+                //       onTap: () {
+                //         context.read<TcpCubit>().disconnect();
+                //       },
+                //       child: Icon(
+                //         Icons.light,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+              ],
             ),
           ),
         ],

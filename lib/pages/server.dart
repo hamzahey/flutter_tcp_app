@@ -2,12 +2,14 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tcp/cubits/tcp_cubits/tcp_state.dart';
 import 'package:tcp/models/items.dart';
 import 'package:tcp/cubits/tcp_cubits/tcp_cubit.dart';
 import 'package:tcp/models/message.dart';
 import 'package:tcp/cubits/socket_list/socket_cubit.dart';
 import 'package:tcp/cubits/socket_list/socket_state.dart';
 import 'home.dart';
+import 'package:connectivity/connectivity.dart';
 
 class TcpClient extends StatefulWidget {
   @override
@@ -19,6 +21,18 @@ class _TcpClientState extends State<TcpClient> {
   final _hostController = TextEditingController();
   final _portController = TextEditingController();
   final _messageController = TextEditingController();
+  late bool flag_3 = false;
+
+  Future<void> checkConnectivity() async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      flag_3 = true;
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Check interet Connectivity")));
+    }
+  }
 
   @override
   void dispose() {
@@ -29,7 +43,16 @@ class _TcpClientState extends State<TcpClient> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkConnectivity();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    bool flag_1 = false;
+    bool flag_2 = false;
     return Scaffold(
       appBar: AppBar(title: Text('TCP Client')),
       body: Padding(
@@ -74,6 +97,7 @@ class _TcpClientState extends State<TcpClient> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
+                    flag_1 = true;
                     final host = _hostController.text;
                     final port = int.tryParse(_portController.text) ?? 0;
                     context.read<TcpCubit>().connect(host, port);
@@ -87,9 +111,10 @@ class _TcpClientState extends State<TcpClient> {
                   if (_formKey.currentState!.validate()) {
                     final Message = _messageController.text;
                     context.read<TcpCubit>().send(Message);
+                    flag_2 = true;
                   }
                 },
-                child: Text('Send Message'),
+                child: Text('Send Goal'),
               ),
               SizedBox(height: 16),
               ElevatedButton(
@@ -104,7 +129,9 @@ class _TcpClientState extends State<TcpClient> {
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
+                  if (_formKey.currentState!.validate() &&
+                      flag_1 == true &&
+                      flag_2 == true && flag_3 == true) {
                     final host = _hostController.text;
                     final port = int.tryParse(_portController.text) ?? 0;
                     List<String> Message = [];
